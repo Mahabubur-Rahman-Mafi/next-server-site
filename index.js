@@ -20,7 +20,9 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     const serviceCollection = client.db("next").collection("services");
+    const reviewCollection = client.db('next').collection('review')
 
+    // service 
     app.get("/services3", async (req, res) => {
       const query = {};
       const limit = 3;
@@ -42,6 +44,16 @@ async function run() {
         const result = await serviceCollection.findOne(query);
         res.send(result);
       });
+    // ----
+
+    // reviews
+    app.post('/reviews', async (req, res) => {
+      const order = req.body
+      const result = await reviewCollection.insertOne(order)
+      res.send(result)
+      })
+
+    // ----
   } finally {
   }
 }
