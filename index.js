@@ -22,7 +22,8 @@ async function run() {
     const serviceCollection = client.db("next").collection("services");
     const reviewCollection = client.db('next').collection('review')
 
-    // service 
+
+    // service
     app.get("/services3", async (req, res) => {
       const query = {};
       const limit = 3;
@@ -46,14 +47,35 @@ async function run() {
       });
     // ----
 
+
     // reviews
     app.post('/reviews', async (req, res) => {
       const order = req.body
       const result = await reviewCollection.insertOne(order)
       res.send(result)
-      })
+    })
+    app.get('/reviews', async (req, res) => {
+      let query = {}
+      if (req.query.email) {
+        query = {
+          email: req.query.email,
+        };
+      }
+      const cursor = reviewCollection.find(query)
+      const result = await cursor.toArray()
+      res.send(result)
+    })
 
+
+    app.get('/reviews/:id', async (req, res) => {
+      const id = req.params.id
+      const query = {serviceId: id}
+      const cursor = reviewCollection.find(query);
+      const result = await cursor.toArray();
+      res.send(result);
+    })
     // ----
+
   } finally {
   }
 }
