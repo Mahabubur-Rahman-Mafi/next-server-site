@@ -9,7 +9,7 @@ app.use(cors());
 app.use(express.json());
 // -----
 
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const uri = `mongodb+srv://${process.env.US_NAME}:${process.env.US_PASS}@cluster0.6cfnsid.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
@@ -35,6 +35,13 @@ async function run() {
       const result = await cursor.toArray();
       res.send(result);
     });
+
+      app.get("/services/:id", async (req, res) => {
+        const id = req.params.id;
+        const query = { _id: ObjectId(id) };
+        const result = await serviceCollection.findOne(query);
+        res.send(result);
+      });
   } finally {
   }
 }
