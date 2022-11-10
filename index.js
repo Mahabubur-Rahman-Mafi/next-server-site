@@ -87,7 +87,6 @@ async function run() {
       const id = req.params.id
       const query = { _id: ObjectId(id) }
       const editText = req.body
-      console.log(editText.text);
       const option = { upsert: true }
       const updatetext = {
         $set: {
