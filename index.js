@@ -87,14 +87,14 @@ async function run() {
       const id = req.params.id
       const query = { _id: ObjectId(id) }
       const editText = req.body
+      console.log(editText.text);
       const option = { upsert: true }
       const updatetext = {
         $set: {
-          text: editText
+          text: editText.text
         }
       }
       const result = await reviewCollection.updateOne(query, updatetext, option)
-      console.log(result);
       res.send(result)
     })
 
